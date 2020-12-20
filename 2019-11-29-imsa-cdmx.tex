@@ -1,0 +1,365 @@
+\ifdefined\handout
+  \documentclass[handout]{beamer}
+\else
+  \documentclass{beamer}
+\fi
+
+\usetheme{boxes}
+\definecolor{beamer@structure@color}{rgb}{0,0,0}
+
+\usecolortheme{structure}
+
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{frametitle}{\color{black}
+\def\myhrulefill{\leavevmode\leaders\hrule height 1pt\hfill\kern 0pt}
+\headingfont\insertframetitle\par\vskip-8pt\myhrulefill}
+
+\usepackage{tikz-cd}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{babel}
+
+\newcommand*{\longhookrightarrow}{\ensuremath{\lhook\joinrel\relbar\joinrel\rightarrow}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\isom}{\cong}
+\DeclareMathOperator{\Gal}{Gal}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\dfn}{\mathrel{\mathop:}=}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Spec}{Spec}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{array}
+\newcolumntype{x}[1]{>{\centering\hspace{0pt}}p{#1}}
+\definecolor{shadecolor}{rgb}{0.89,0.89,0.89}
+\usepackage{colortbl}
+
+\newcommand{\term}{\textbf}
+
+\usepackage{mathspec}
+\setsansfont[BoldFont={PT Sans Bold}, ItalicFont={PT Sans Italic}]{PT Sans}
+\setmathrm[BoldFont={PT Sans Bold}, ItalicFont={PT Sans Italic}]{PT Sans}
+\newfontfamily\headingfont[]{PT Sans Bold}
+
+\begin{document}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}[noframenumbering]
+  \headingfont
+  \begin{center}
+    {\huge Weil-étale cohomology for n < 0
+
+    }
+
+    \vspace{3em}
+
+    {\large Alexey Beshenov}
+
+    \vspace{0.20em}
+
+    (CIMAT, Guanajuato)
+
+    \vspace{3em}
+
+    November 29, 2019
+
+    \vspace{1em}
+
+    First IMSA Conference\\
+    Centro de Colaboración Samuel Gitler / CINVESTAV
+
+  \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Arithmetic zeta-functions (Serre, 1965)}
+
+  \onslide<2->\[ \begin{tikzcd}
+      X \ar{d}{\small\begin{tabular}{l} separated, \\ finite type \end{tabular}} \\
+      \Spec \ZZ
+    \end{tikzcd} \]
+
+  \vspace{\fill}
+
+  \onslide<3->\[ \zeta_X (s) \dfn \prod_{\substack{x \in X \\ \text{closed}}} \frac{1}{1 - \# (\mathcal{O}_{X,x}/\mathfrak{m})^{-s}}. \quad (\Re s > \dim X) \]
+
+  \vspace{\fill}
+
+  \onslide<4->{\textbf{Conjecture}: meromorphic continuation to $s \in \CC$}.
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Extensively studied cases}
+
+  \begin{itemize}
+  \item<2-> \textbf{Riemann}:
+    $\zeta (s) = \prod_p \frac{1}{1 - p^{-s}} = \zeta_{\Spec \ZZ} (s)$.
+
+  \item<3-> \textbf{Dedekind}: $\zeta_F (s) = \zeta_{\Spec \mathcal{O}_F} (s)$
+    for a number field $F/\QQ$.
+
+  \item<4-> \textbf{Hasse--Weil}: $X/\FF_q$, then
+    $$\zeta_X (s) = Z_X (q^{-s}),$$
+    where
+    $$Z_X (t) = \exp \left(\sum_{m \ge 1} \frac{\# X (\FF_{q^m})}{m}\,t^m\right) \stackrel{\text{Dwork}}{\in} \QQ (t).$$
+    (Cf. Weil conjectures.)
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Special values}
+
+  \begin{itemize}
+  \item<2-> Fix $n \in \ZZ$.
+
+  \item<3-> $d_n \dfn$ \term{vanishing order} of $\zeta_X (s)$ at $s = n$.
+
+  \item<4-> \term{Special value} (leading Taylor coefficient) at $s = n$:
+    $$\zeta_X^* (n) \dfn \lim_{s \to n} (s-n)^{-d_n}\,\zeta_X (s).$$
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Classical motivation: class number formula}
+
+  \begin{itemize}
+  \item<2-> Let $X = \Spec \mathcal{O}_F$ and $n = 0$.
+
+  \item<3-> Zero of order $d_0 = r_1 + r_2 - 1$,
+
+    where $r_1 \dfn \#$ real places, $2 r_2 \dfn \#$ complex places.
+
+  \item<4->Special value
+    $\zeta_F^* (0) = - \cfrac{\# H^1 (\Spec \mathcal{O}_F, \mathbb{G}_m)}{\# H^0 (\Spec \mathcal{O}_F, \mathbb{G}_m)_{tors}}\,R_F$,
+
+    $R_F \dfn$ \textbf{Dirichlet regulator} $\in \RR$.
+
+  \item<5-> Formulas for other $n \in \ZZ$?
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Weil-étale cohomology (Lichtenbaum, 2000s)}
+
+  \textbf{Conjectural cohomology theory}.
+
+  \begin{itemize}
+  \item<2-> Groups $H_{W,c}^i (X, \ZZ (n)) = H^i (R\Gamma_{W,c} (X, \ZZ (n)))$.
+
+  \item<3-> Perfectness: finitely generated and $= 0$ for $|i| \gg 0$.
+
+  \item<4-> Long exact sequence
+    $$\cdots \to H_{W,c}^i (X, \ZZ (n)) \otimes \RR \to H_{W,c}^{i+1} (X, \ZZ (n)) \otimes \RR \to \cdots$$
+
+  \item<5-> Knudsen--Mumford determinants $\Longrightarrow$ canonical
+    isomorphism
+    $$\lambda\colon \RR \xrightarrow{\isom} (\underbrace{\det\nolimits_\ZZ R\Gamma_{W,c} (X, \ZZ (n))}_{\text{free }\ZZ\text{-mod of rk }1}) \otimes \RR.$$
+
+  \item<6-> $d_n \stackrel{???}{=} \sum_i (-1)^i \cdot i \cdot \rk_\ZZ H^i_{W,c} (X, \ZZ (n))$.
+
+  \item<7-> $\lambda (\zeta_X^* (n)^{-1})\cdot \ZZ \stackrel{???}{=} \det\nolimits_\ZZ R\Gamma_{W,c} (X, \ZZ (n))$.
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Some work on Weil-étale cohomology}
+
+  \begin{tabular}{lll}
+    \onslide<2->{\textbf{Lichtenbaum}, 2005: & $X/\FF_q$ smooth} \\
+    \onslide<2->{+ work by \textbf{Geisser}}\\
+    \\
+    \onslide<3->{\textbf{Lichtenbaum}, 2009: & $X = \Spec \mathcal{O}_F$} \\
+    \\
+    \onslide<4->{\textbf{Morin}, 2014: & $X/\ZZ$ proper, regular, & $n = 0$} \\
+    \\
+    \onslide<5->{\textbf{Flach, Morin}, 2018: & $X/\ZZ$ proper, regular, & $n \in \ZZ$} \\
+    \\
+    \onslide<6->{\textbf{---}, 2018: & $X/\ZZ$ any...} & \onslide<7->{$n < 0$} \\
+  \end{tabular}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge From now on fix n < 0}
+  \end{center}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Motivic cohomology $H^\bullet (X_\text{\it ét}, \ZZ^c (n))$}
+
+  \begin{itemize}
+  \item<2-> \textbf{Geisser}, 2010: \textbf{dualizing cycle complexes}
+    $\ZZ^c (n)$.
+
+    Complexes of abelian sheaves on $X_\text{\it ét}$.
+
+  \item<3-> A variation of \textbf{Bloch's cycle complexes} (1986).
+
+  \item<4-> Motivation: arithmetic duality theorems.
+
+  \item<5-> Behaves as \textbf{Borel--Moore homology}: for
+    $Z \to X \leftarrow U$
+    $$R\Gamma (Z_\text{\it ét}, \ZZ^c (n)) \to R\Gamma (X_\text{\it ét}, \ZZ^c (n)) \to R\Gamma (U_\text{\it ét}, \ZZ^c (n)) \to [+1]$$
+
+  \item<6-> Calculations: few and hard...
+
+  \item<7-> \textbf{Conjecture} (Lichtenbaum):
+    $H^i (X_\text{\it ét}, \ZZ^c (n))$ are finitely generated.
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Weil-étale complexes (after Flach and Morin)}
+
+  \begin{itemize}
+  \item<2-> Assuming Lichtenbaum's conjecture, there exists a perfect complex
+    $R\Gamma_{W,c} (X, \ZZ (n))$.
+
+  \item<3-> Splitting over $\RR$:
+    \[ R\Gamma_{W,c} (X, \ZZ (n)) \otimes \RR \isom
+      \left(\begin{array}{c}
+              R\!\Hom (R\Gamma (X_\text{\it ét}, \ZZ^c (n)), \RR) [-1] \\
+              \oplus \\
+              R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1]
+            \end{array}\right), \]
+    $\RR (n) \dfn (2\pi i)^n\,\RR$, as a $G_\RR = \Gal (\CC/\RR)$-equivariant sheaf.
+
+  \item<4-> Long exact sequence of $H^i_{W,c} (X, \ZZ (n)) \otimes \RR$: need a
+    \term{regulator}.
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Regulator morphism}
+
+  \begin{itemize}
+  \item<2-> \textbf{Kerr--Lewis--Müller-Stach} (2006) $\Longrightarrow$ for
+    $X_\CC$ is smooth and quasi-projective:
+    $$Reg\colon R\Gamma (X_\text{\it ét}, \ZZ^c (n)) \to R\Gamma_{BM} (G_\RR, X (\CC), \RR (n)) [1].$$
+
+  \item<3-> Note: as always, $n < 0$, this is why the RHS is simple.
+
+  \item<4-> \textbf{Conjecture} (Beilinson): the dual
+    $$Reg^\vee\colon R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \to R\!\Hom (R\Gamma (X_\text{\it ét}, \ZZ^c (n)), \RR)$$
+    is a quasi-isomorphism.
+
+  \item<5-> Splitting over $\RR$ + Beilinson's conjecture $\Longrightarrow$
+    l.e.s.
+    $$\cdots \to H_{W,c}^i (X, \ZZ (n)) \otimes \RR \to H_{W,c}^{i+1} (X, \ZZ (n)) \otimes \RR \to \cdots$$
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Main conjecture $\mathbf{C} (X,n)$}
+
+  \begin{itemize}
+  \item<2-> Assume...\\
+    \hspace{1em}meromorphic continuation of $\zeta_X (s)$ around $s = n < 0$,\\
+    \hspace{1em}$X_\CC$ is smooth quasi-projective,\\
+    \hspace{1em}Lichtenbaum's and Beilinson's conjectures.
+
+  \item<3-> \textbf{Then}
+    \begin{align*}
+      d_n & = \sum_i (-1)^i \cdot i \cdot \rk_\ZZ H^i_{W,c} (X, \ZZ (n)),\\
+      \lambda (\zeta_X^* (n)^{-1})\cdot \ZZ & = \det\nolimits_\ZZ R\Gamma_{W,c} (X, \ZZ (n)).
+    \end{align*}
+
+  \item<4-> Note: this would imply
+    $d_n = \sum_i (-1)^i \dim_\RR H_c^i (G_\RR, X (\CC), \RR (n))$.
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{What it's good for?}
+
+  \begin{itemize}
+  \item<2-> If $X$ is proper and regular, then $\mathbf{C} (X,n)$ is equivalent
+    to the conjecture of Flach and Morin.
+
+  \item<3-> (Whenever makes sense) compatible with the
+    \textbf{Tamagawa number conjecture} (Bloch--Kato--Fontaine--Perrin-Riou).
+
+  \item<4-> Well-behaved under decompositions: for $Z \to X \leftarrow U$ holds
+    $\zeta_X (s) = \zeta_Z (s) \cdot \zeta_U (s)$ (obviously), and in fact
+    $$\mathbf{C} (X,n) \iff \mathbf{C} (Z,n) + \mathbf{C} (U,n).$$
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{* Construction (after Flach and Morin)}
+
+  \onslide<2->{Consider the étale sheaf
+    $\ZZ (n) \dfn \bigoplus_p \varinjlim_r  j_{p!} \mu_{p^r}^{\otimes n} [-1]$,
+    where $j_p\colon X [1/p] \hookrightarrow X$.}
+
+  \vspace{1em}
+
+  \onslide<3->{$\begin{tikzcd}[column sep=0.5em, font=\footnotesize, ampersand replacement=\&]
+      \& \& R\Gamma_\text{\it W,c} (X, \ZZ (n))\ar{d} \\
+      {R\!\Hom (R\Gamma (X_\text{\it ét}, \ZZ^c (n)), \QQ [-2])} \ar{r} \ar{d} \& R\Gamma_c (X_\text{\it ét}, \ZZ (n)) \ar{r}\ar{d}{\text{comparison}} \& R\Gamma_\text{\it fg} (X, \ZZ (n)) \ar{r}\ar[dashed]{d} \& {[+1]} \ar{d} \\
+      0\ar{r} \& R\Gamma_c (G_\RR, X (\CC), \ZZ (n)) \ar{r}{\text{id}} \& R\Gamma_c (G_\RR, X (\CC), \ZZ (n))\ar{d}\ar{r} \& 0 \\
+      \& \& R\Gamma_\text{\it W,c} (X, \ZZ (n)) [1]
+    \end{tikzcd}$}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}
+  \frametitle{Some questions}
+
+  \begin{itemize}
+  \item<2-> A regulator for non-smooth $X_\CC$?
+
+  \item<3-> A less ad-hoc definition of Weil-étale complexes?
+
+    Morally, there should be a Grothendieck topology behind everything.
+  \end{itemize}
+\end{frame}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge Thank you!}
+  \end{center}
+\end{frame}
+
+\end{document}
