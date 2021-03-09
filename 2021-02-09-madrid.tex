@@ -96,6 +96,27 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}
+  \frametitle{Plan de charla}
+
+  \begin{enumerate}
+  \item \textbf{Motivación}:
+    funciones zeta aritméticas,
+    valores especiales
+    y su interpretación cohomológica.
+
+  \item \textbf{Programa Weil-étale de Lichtenbaum}:
+    ideas y resultados principales.
+
+  \item \textbf{Mi trabajo}:
+    conjeturas y resultados incondicionales.
+
+  \item \textbf{Preguntas para el futuro}.
+  \end{enumerate}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[plain]
   \headingfont
 
@@ -125,7 +146,7 @@
 
   \item Fijemos $n \in \ZZ$.
 
-  \item $\ord_{s=n} \zeta (s) = d_n \dfn \text{\textbf{orden de anulación} en }s = n$.
+  \item $\ord_{s=n} \zeta (X,s) = d_n \dfn \text{\textbf{orden de anulación} en }s = n$.
 
   \item \textbf{Valor especial}: $\zeta^* (X,n) \dfn \lim_{s \to n} (s-n)^{-d_n}\,\zeta (X,s)$.
   \end{itemize}
@@ -140,13 +161,13 @@
   \item \textbf{Función zeta de Dedekind} (siglo XIX).
 
     $F/\QQ$ cuerpo de números, $\mathcal{O}_F \subset F$ anillo de enteros.
-    \[ \zeta_F (s) = \zeta (\Spec \mathcal{O}_F, s). \]
+    \[ \zeta_F (s) \dfn \zeta (\Spec \mathcal{O}_F, s). \]
     E.g. $\zeta_\QQ (s) = \zeta (\Spec \ZZ, s) = \zeta (s)$.
 
   \item \textbf{Función zeta de Hasse--Weil} (siglo XX).
 
     $X/\FF_q$ variedad sobre cuerpo finito.
-    \[ Z (X,t) = \exp \left(\sum_{k\ge 1} \frac{\# X (\FF_{q^k})}{k}\,t^k\right) \stackrel{\text{Dwork}}{\in} \QQ (t). \]
+    \[ Z (X,t) \dfn \exp \left(\sum_{k\ge 1} \frac{\# X (\FF_{q^k})}{k}\,t^k\right) \stackrel{\text{Dwork}}{\in} \QQ (t). \]
 
     \[ \zeta (X,s) = Z (X,q^{-s}). \]
 
@@ -160,11 +181,16 @@
   \frametitle{Fórmula del número de clases (Dirichlet)}
 
   \begin{itemize}
-  \item $s = n < 0$.
+  \item $s = 0$.
 
   \item $\ord_{s = 0} \zeta_F (s) = r_1 + r_2 - 1 = \rk \mathcal{O}_F^\times$.
 
-    \[ \zeta_F^* (0) = -\frac{\# \Pic (\mathcal{O}_F)}{\# (\mathcal{O}_F)^\times_\tors}\,R_F. \]
+  \item $\zeta_F^* (0) = -\frac{\# \Pic (\mathcal{O}_F)}{\# (\mathcal{O}_F)^\times_\tors}\,R_F$.
+
+  \item Similar para curvas proyectivas lisas:
+
+    $\ord_{s = 0} \zeta (X,s) = -1$ y
+    $\zeta^* (X,0) = \frac{\# \Pic^0 (X)}{q-1}$.
 
   % \item $X = C/\FF_q$ curva proyectiva lisa de género $g$.
 
@@ -173,8 +199,6 @@
   %     \deg P (t) = 2g. \]
 
   %   \[ \ord_{s = 0} \zeta (X,s) = -1 \]
-
-  %   \[ \zeta^* (X,0) = \frac{\# \Pic^0 (X)}{q-1}. \]
 
   \item ¿Generalizaciones?
   \end{itemize}
@@ -195,11 +219,13 @@
 
   \item Funciona para $X / \Spec \ZZ$.
 
-  \item Para $X$ propio, regular de dim. $d$:
+  \item Para $X$ propio, regular, $d = \dim X$:
 
     \[ \underbrace{H^i (X_\et, \ZZ^c (n))}_{\text{coh. de Borel--Moore motívica}} = \underbrace{H^{i+2d} (X_\et, \ZZ (d-n))}_{\text{coh. motívica habitual}}. \]
 
-  \item Pocos cálculos explícitos. Generación finita --- ???
+  \item Pocos cálculos explícitos.
+
+    Generación finita --- ???
   \end{itemize}
 \end{frame}
 
@@ -209,16 +235,16 @@
   \frametitle{Conjetura cohomológica de Lichtenbaum}
 
   \begin{itemize}
-  \item $n < 0$.
+  \item $n \le 0$.
 
   \item $d_n = \ord_{s = n} \zeta_F (s) = \begin{cases}
-      r_1 + r_2, & n\text{ par}, \\
-      r_1, & n\text{ impar}.
+      r_1 + r_2, & n < 0\text{ par}, \\
+      r_1, & n < 0\text{ impar}.
     \end{cases}$
 
   \item $\zeta_F^* (0) = -\frac{\# H^1 (X_\et, \mathbb{G}_m)}{\# H^0 (X_\et, \mathbb{G}_m)_\tors}\,R_F = -\frac{\# H^0 (X_\et, \ZZ^c (0))}{\# H^{-1} (X_\et, \ZZ^c (0))_\tors}\,R_F.$
 
-  \item \textbf{Conjetura}: para $n < 0$
+  \item \textbf{Conjetura}: para $n \le 0$
     \[ \zeta_F^* (n) = \pm\frac{\# H^0 (X_\et, \ZZ^c (0))}{\# H^{-1} (X_\et, \ZZ^c (0))_\tors}\,R_{F,n}. \]
 
   \item \textbf{Regulador de Beilinson}:
@@ -359,9 +385,9 @@
 
   \item Morin (2014): $X/\ZZ$ propio y regular, $n = 0$.
 
-  \item Flach, Morin (2018): $X/\ZZ$ propio y regular, $n \in \ZZ$.
+  \item Flach, Morin (2018): \rule[0.25em]{2.3cm}{0.6pt}, $n \in \ZZ$.
 
-  \item B. (2020/21): cualquier $X/\ZZ$ separado de tipo finito, $n < 0$.
+  \item B. (2020/21): cualquier esquema aritmético $X/\ZZ$, $n < 0$.
   \end{itemize}
 \end{frame}
 
@@ -397,7 +423,7 @@
   %                          & \cong H^{i-1}_c (X_\et, \QQ/\ZZ' (n)), \quad \QQ/\ZZ' (n) = \varinjlim_{p\nmid m} \mu_m^{\otimes n}.
   %   \end{align*}
 
-  \item Coeficientes reales:
+  \item Se escinde con coeficientes reales:
     \[ R\Gamma_\Wc (X, \ZZ(n)) \otimes \RR \cong
       \begin{array}{c}
         \RHom(R\Gamma(X_\et, \ZZ^c(n)), \RR)[-1]\\
@@ -441,8 +467,8 @@
 
   \item $\RR(n) \dfn (2\pi i)^n\,\ZZ$, $G_\RR \dfn \Gal (\CC/\RR)$.
 
-  \item * Los grupos de llegada no es la (co)homología de Deligne-Beilinson,
-    sino simplemente $H_c^i (G_\RR, X(\CC), \RR (n))^\vee$, porque $n < 0$.
+  \item * La llegada no es la (co)homología de Deligne-Beilinson, sino
+    simplemente $H_c^i (G_\RR, X(\CC), \RR (n))^\vee$, porque $n < 0$.
 
   \item Conjetura $\mathbf{B} (X,n)$ (Beilinson):
     \[ Reg^\vee\colon R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \to
@@ -457,7 +483,7 @@
   \frametitle{Conjetura del orden de anulación}
 
   \begin{itemize}
-  \item $\mathbf{VO} (X,n)$:
+  \item $\mathbf{VO} (X,n)$: asumiendo $\mathbf{L}^c (X,n)$,
     \[ \ord_{s=n} \zeta (X,s) =
       \sum_{i \in \ZZ} (-1)^i \cdot i \cdot \rk_\ZZ H^i_\Wc (X, \ZZ (n)). \]
 
@@ -467,11 +493,11 @@
                              & = \sum_{i \in \ZZ} (-1)^{i+1} \rk_\ZZ H^i (X_\et, \ZZ^c (n)). \quad (**)
     \end{align*}
 
-  \item (*) consistente con la ecuación funcional (conjetural).
+  \item (*) concuerda con la ecuación funcional (conjetural).
 
-    Para $n < 0$ polos y ceros vienen de los $\Gamma$-factores.
+    Para $n < 0$ los polos y ceros vienen de los $\Gamma$-factores.
 
-  \item (**) consistente con una conjetura de Soulé (1984).
+  \item (**) concuerda con una conjetura de Soulé (1984).
   \end{itemize}
 \end{frame}
 
@@ -527,7 +553,8 @@
   \begin{itemize}
   \item $R$ = anillo conmutativo.
 
-  \item Para módulos proyectivos f.g.,
+  \item Para módulos proyectivos finitamente generados:
+
     $\det\nolimits_R P \dfn \bigwedge^{\rk P} P$
 
     (invertible = proyectivo de rk 1).
@@ -568,7 +595,7 @@
   \item Cuasi-isomorfismo de complejos, asumiendo $\mathbf{B} (X,n)$:
     \[ \begin{tikzcd}[column sep=4em,ampersand replacement=\&]
         \begin{array}{c} R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-2] \\ \oplus \\ R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \end{array} \ar{d}{Reg^\vee [-1] \oplus id}[swap]{\cong} \\
-        \begin{array}{c} \RHom (R\Gamma (X_\et, \ZZ^c (n)), \RR) [-1] \\ \oplus \\ R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \end{array} \ar{r}{\text{split}}[swap]{\cong} \&[-2em] R\Gamma_\Wc (X, \ZZ (n)) \otimes \RR
+        \begin{array}{c} \RHom (R\Gamma (X_\et, \ZZ^c (n)), \RR) [-1] \\ \oplus \\ R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \end{array} \ar{r}{\text{escisión}}[swap]{\cong} \&[-2em] R\Gamma_\Wc (X, \ZZ (n)) \otimes \RR
       \end{tikzcd} \]
 
   \item Isomorfismo de determinantes:
@@ -589,15 +616,16 @@
   \begin{itemize}
   \item Asumamos
     \begin{itemize}
-    \item $\mathbf{L}^c (X_\et, n)$,
-    \item la fibra $X_\CC$ lisa,
-    \item $\mathbf{B} (X,n)$,
+    \item $\mathbf{L}^c (X_\et, n)$: generación finita de $H^i (X_\et, \ZZ^c(n))$,
+    \item fibra $X_\CC$ lisa,
+    \item $\mathbf{B} (X,n)$: regulador,
     \item prolongación meromorfa alrededor de $s = n < 0$.
     \end{itemize}
 
   \item $\mathbf{C} (X,n)$: el valor especial es $s = n$ se determina salvo
     signo por
-    \[ \lambda (\zeta^* (X,n)^{-1})\cdot \ZZ = \det\nolimits_\ZZ H^\bullet_\Wc (X, \ZZ (n)). \]
+    \[ \lambda (\zeta^* (X,n)^{-1})\cdot \ZZ =
+      \det\nolimits_\ZZ R\Gamma_\Wc (X, \ZZ (n)). \]
   \end{itemize}
 \end{frame}
 
@@ -622,7 +650,7 @@
     $\mathbf{L}^c (X_\et, n)$, si $X/\FF_q$ es lisa y proyectiva.
 
   \item Se cumple para cualquier $X$, asumiendo la resolución de singularidades
-    sobre $\FF_q$
+    sobre $\FF_q$ (!)
   \end{itemize}
 \end{frame}
 
@@ -631,8 +659,8 @@
 \begin{frame}
   \frametitle{Compatibilidades}
 
-  \begin{enumerate}
-  \item[1)] \textbf{Uniones disjuntas}: si
+  \begin{itemize}
+  \item \textbf{Uniones disjuntas}: si
     $X = \coprod_{1 \le i \le r} X_i$, entonces
     \[ \zeta (X,s) = \prod_{1 \le i \le r} \zeta (X_i,s). \]
 
@@ -642,7 +670,7 @@
       \mathbf{C} (X,n) & \iff \mathbf{C} (X_i,n)\text{ para todo }i.
     \end{align*}
 
-  \item[2)] \textbf{Descomposiciones cerrado-abiertas}:
+  \item \textbf{Descomposiciones cerrado-abiertas}:
     para $Z \not\hookrightarrow X \hookleftarrow U$,
     \[ \zeta (X,s) = \zeta (Z,s) \cdot \zeta (U,s). \]
 
@@ -651,13 +679,13 @@
     (resp. $\mathbf{C} (X,n)$, $\mathbf{C} (Z,n)$, $\mathbf{C} (U,n)$)
     implican la tercera.
 
-  \item[3)] \textbf{Fibrados afines}:
+  \item \textbf{Fibrados afines}:
     $\zeta (\AA^r_X, s) = \zeta (X, s-r)$.
     \begin{align*}
       \mathbf{VO} (\AA^r_X, n) & \iff \mathbf{VO} (X, n-r), \\
       \mathbf{C} (\AA^r_X, n) & \iff \mathbf{C} (X, n-r).
     \end{align*}
-  \end{enumerate}
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
