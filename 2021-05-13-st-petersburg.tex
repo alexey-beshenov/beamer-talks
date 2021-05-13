@@ -1,0 +1,1074 @@
+\ifdefined\handout
+  \documentclass[handout]{beamer}
+\else
+  \documentclass{beamer}
+\fi
+
+\usetheme{boxes}
+\definecolor{beamer@structure@color}{rgb}{0,0,0}
+
+\usecolortheme{structure}
+
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{frametitle}{\color{black}
+\def\myhrulefill{\leavevmode\leaders\hrule height 1.5pt\hfill\kern 0pt}
+\headingfont\insertframetitle\par\vskip-8pt\myhrulefill}
+
+\usepackage{tikz-cd}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{babel}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+
+\newcommand*{\longhookrightarrow}{\ensuremath{\lhook\joinrel\relbar\joinrel\rightarrow}}
+
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\DeclareMathOperator{\fchar}{char}
+
+\renewcommand{\AA}{\mathbb{A}}
+
+\DeclareMathOperator{\Gal}{Gal}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\dfn}{\mathrel{\mathop:}=}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\vol}{vol}
+
+\newcommand{\et}{\text{\it ét}}
+\newcommand{\tors}{\text{\it tors}}
+\newcommand{\Wc}{\text{\it W,c}}
+
+\newcommand{\RHom}{R\!\Hom}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{array}
+\newcolumntype{x}[1]{>{\centering\hspace{0pt}}p{#1}}
+\definecolor{shadecolor}{rgb}{0.89,0.89,0.89}
+\usepackage{colortbl}
+
+\newcommand{\term}{\textbf}
+
+\usepackage{mathspec}
+\setsansfont[BoldFont={IBM Plex Sans Bold}, ItalicFont={IBM Plex Sans Italic}]{IBM Plex Sans}
+\setmathrm[BoldFont={IBM Plex Sans Bold}, ItalicFont={IBM Plex Sans Italic}]{IBM Plex Sans}
+\newfontfamily\headingfont[]{IBM Plex Sans Bold}
+
+\setbeamercovered{transparent=15}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[noframenumbering]
+  \begin{center}
+    {\LARGE\bf WEIL-ÉTALE COHOMOLOGY \\
+      OF ARITHMETIC SCHEMES
+
+    }
+
+    \vspace{3em}
+
+    {\large\bf Alexey Beshenov}
+
+    \vspace{1em}
+
+    {\small (Centro de Investigación en Matemáticas, Guanajuato, Mexico)}
+
+    \vspace{3em}
+
+    13/05/2021
+
+    \vspace{1em}
+
+    Seminar on A${}^1$-topology, motives and $K$-theory
+
+    Euler International Mathematical Institute, St.\,Petersburg
+
+  \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{OUTLINE}
+
+  \begin{enumerate}
+  \item<2->[I.] \textbf{Motivation}:
+    arithmetic zeta functions,
+    special values,
+    and their cohomological interpretation.
+
+  \item<3->[II.] \textbf{Lichtenbaum's Weil-étale program}:
+    ideas and known results.
+
+  \item<4->[III.] \textbf{Constructions and conjectures for n < 0}
+    (my work).
+
+  \item<5->[IV.] \textbf{Some new unconditional results}:
+    one-dimensional and cellular schemes.
+
+  \item<6->[V.] \textbf{Some questions for the future}.
+  \end{enumerate}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge PART I.
+
+      \vspace{1em}
+
+      (MOTIVIC) MOTIVATION}
+  \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{ARITHMETIC SCHEMES AND\\
+    THEIR ZETA FUNCTIONS}
+
+  \begin{itemize}
+  \item<2-> \textbf{Arithmetic scheme} $X$:
+
+    separated, of finite type over $\Spec \ZZ$.
+
+  \item<3-> \textbf{Zeta function}:
+    \[ \begin{tikzcd}[ampersand replacement=\&, row sep=0.4em, decoration=snake]
+        X\ar[->,decorate]{r} \& \zeta (X,s) = \prod\limits_{\substack{x \in X \\ \text{closed}}} \frac{1}{1 - |\kappa (x)|^{-s}}
+      \end{tikzcd} \]
+
+  \item<4-> Convergence for $s > \dim X$.
+
+  \item<5-> Big conjecture: meromorphic continuation to $s \in \CC$.
+
+  \item<6-> Big conjecture: functional equation
+    $\zeta (X,s) \leftrightarrow \zeta (X, \dim X - s)$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{ARITHMETIC VS. GEOMETRY}
+
+  \onslide<2->{\[ \begin{tikzcd}[ampersand replacement=\&]
+        \text{arithmetic} \& \& \& \text{geometry} \\
+        X \ar{d}{\text{f.t.}} \& \& \& X \ar{d}{\text{f.t.}}\ar[dashed,bend left=15]{ddr} \\
+        \Spec \ZZ \& \& \& \Spec k\ar[dashed]{dr} \\
+        \& \& \& \& \Spec \ZZ \\
+      \end{tikzcd} \]}
+
+  \begin{itemize}
+  \item<3-> Both of the worlds: varieties $X/\FF_q$.
+
+  \item<4-> Mixed characteristic: usually harder.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{DEDEKIND ZETA FUNCTION (XIX CENTURY)}
+
+  \begin{itemize}
+  \item<2-> \textbf{Number field}: finite extension $F/\QQ$.
+
+  \item<3-> \textbf{Ring of integers}: the ``integral model'':
+    \[ \begin{tikzcd}[ampersand replacement=\&, column sep=0pt]
+        \mathcal{O}_F\ar[-]{d}[swap]{\rk = [F : \QQ]} \& \subset \& F\ar[-]{d} \\
+        \ZZ \& \subset \& \QQ
+      \end{tikzcd} \]
+
+  \item<4-> $\dim \mathcal{O}_F = 1$.
+
+  \item<5-> \textbf{Dedekind zeta function}:
+    \begin{align*}
+      \zeta_F (s) & \dfn \zeta (\Spec \mathcal{O}_F, s) \\
+      & = \prod_{\mathfrak{m} \subset \mathcal{O}_F} \frac{1}{1 - |\mathcal{O}_F/\mathfrak{m}|^{-s}} \\
+      & = \sum_{0 \ne \mathfrak{a} \subseteq \mathcal{O}_F} \frac{1}{|\mathcal{O}_F/\mathfrak{a}|^s}. \quad \text{(Euler)}
+    \end{align*}
+
+  \item<6-> Primordial example: $\zeta_\QQ (s) = \zeta (\Spec \ZZ, s) = \zeta (s)$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{MORE ON NUMBER FIELDS ($X = \Spec \mathcal{O}_F$)}
+
+  \begin{itemize}
+  \item<2-> \textbf{Real and complex places}.
+    Consider $\Gal (\CC/\RR) \curvearrowright X (\CC)$:
+    \[ \begin{tikzpicture}[ampersand replacement=\&]
+        \matrix(m)[matrix of math nodes, row sep=0.5em, column sep=0.5em,
+        text height=1ex, text depth=0.2ex]{
+          ~ \& ~ \& ~ \& ~ \& ~ \& \bullet \& \bullet \& \cdots \& \bullet \\
+          \bullet \& \bullet \& \cdots \& \bullet \\
+          ~ \& ~ \& ~ \& ~ \& ~ \& \bullet \& \bullet \& \cdots \& \bullet \\};
+
+        \draw[->] (m-2-1) edge[loop above,min distance=10mm] (m-2-1);
+        \draw[->] (m-2-2) edge[loop above,min distance=10mm] (m-2-2);
+        \draw[->] (m-2-4) edge[loop above,min distance=10mm] (m-2-4);
+
+        \draw[->] (m-1-6) edge[bend left] (m-3-6);
+        \draw[->] (m-1-7) edge[bend left] (m-3-7);
+        \draw[->] (m-1-9) edge[bend left] (m-3-9);
+
+        \draw[->] (m-3-6) edge[bend left] (m-1-6);
+        \draw[->] (m-3-7) edge[bend left] (m-1-7);
+        \draw[->] (m-3-9) edge[bend left] (m-1-9);
+
+        \draw ($(m-3-1)!.5!(m-3-4)$) node[yshift=-2em,anchor=base] {$r_1$ points};
+        \draw ($(m-3-6)!.5!(m-3-9)$) node[yshift=-2em,anchor=base] {$2\,r_2$ points};
+      \end{tikzpicture} \]
+
+  \item<3-> $r_1 = |X (\RR)|$ and $|X (\CC)| = r_1 + 2 r_2$.
+
+  \item<4-> \textbf{Abelian number fields}: $F/\QQ$ Galois, with $\Gal (F/\QQ)$
+    abelian. Usually easier. Reason: \textbf{Kronecker--Weber} and good
+    understanding of cyclotomic fields.
+    \[ F/\QQ\text{ abelian }\iff
+      F \subseteq \QQ (e^{\frac{2\pi \sqrt{-1}}{N}})
+      \text{ for some }N. \]
+
+  \item<5-> \textbf{Nonmaximal orders}: $\mathcal{O} \subsetneq \mathcal{O}_F$
+    s.t. $\mathcal{O} \otimes_\ZZ \QQ \cong F$.
+
+    $\Spec \mathcal{O}$ is not regular.
+
+    Example:
+    $\ZZ [\sqrt{5}] \subsetneq
+    \ZZ \Bigl[\frac{1+\sqrt{5}}{2}\Bigr] \subset
+    \QQ (\sqrt{5})$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{HASSE-WEIL ZETA FUNCTION (XX CENTURY)}
+
+  \begin{itemize}
+  \item<2-> $X/\FF_q$ variety over finite field.
+
+  \item<3-> $Z (X,t) \dfn \exp \left(\sum_{k\ge 1} \frac{|X (\FF_{q^k})|}{k}\,t^k\right)$.
+
+  \item<4-> $\zeta (X,s) = Z (X,q^{-s})$.
+
+  \item<5-> Weil conjectures (1949).
+
+  \item<6-> Dwork: $Z (X,t) \in \QQ (t)$.
+
+  \item<7-> Full proofs of Weil conjectures: 60s through mid 70s
+
+    (Grothendieck, \dots, Deligne)
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{SPECIAL VALUES}
+
+  \begin{itemize}
+  \item<2-> Fix $n \in \ZZ$.
+
+  \item<3-> Assume analytic continuation at $s = n$.
+
+  \item<4-> \textbf{Vanishing order} at $s = n$:
+    \[ d_n \dfn \ord_{s=n} \zeta (X,s). \]
+
+  \item<5-> \textbf{Special value} at $s = n$:
+    \[ \zeta^* (X,n) \dfn \lim_{s \to n} (s-n)^{-d_n}\,\zeta (X,s). \]
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{CLASS NUMBER FORMULA (DIRICHLET)}
+
+  \begin{itemize}
+  \item<2-> Consider $s = n = 0$.
+
+  \item<3->
+    $\ord_{s = 0} \zeta_F (s) = r_1 + r_2 - 1 = \rk \mathcal{O}_F^\times$
+
+    (Dirichlet's unit theorem).
+
+  \item<4-> $\zeta_F^* (0) = -\frac{|\Pic (\mathcal{O}_F)|}{|(\mathcal{O}_F)^\times_\tors|}\,R_F$.
+
+  \item<5-> $R_F$ --- regulator $\cong$ covolume of a canonical embedding
+    $\mathcal{O}_F^\times \hookrightarrow \RR^{r_1 + r_2 - 1}$
+    (cf. unit theorem).
+
+  \item<6-> Similar for smooth projective curves $X/\FF_q$:
+
+    $\ord_{s = 0} \zeta (X,s) = -1$ and
+    $\zeta^* (X,0) = \frac{|\Pic^0 (X)|}{|\FF_q^\times|}$.
+
+  \item<7-> Generalizations to other $s = n \in \ZZ$?
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{ÉTALE MOTIVIC COHOMOLOGY}
+
+  \begin{itemize}
+  \item<2-> Lichtenbaum, 1984: hypothetical complexes of sheaves on $X_\et$
+    ``responsible'' for special values.
+
+  \item<3-> Bloch, 1986: cycle complexes / higher Chow groups.
+
+  \item<4-> Étale version: complex of sheaves $\ZZ (n)$ on $X_\et$.
+
+  \item<5-> Levine, Geisser, \ldots: works fine for $X / \Spec \ZZ$.
+
+  \item<6-> Few explicit calculations.
+
+  \item<7-> Not even finite generation.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{BOREL-MOORE VERSION}
+
+  \begin{itemize}
+  \item<2-> For those working with $\ZZ (n)$\dots
+
+  \item<3-> Complex of sheaves $\ZZ^c (n)$ on $X_\et$:
+    \begin{align*}
+      z_n (X,i) & = \ZZ \Bigl<Z \stackrel{\dim n+i}{\subset} X \times \Delta^i \Bigm| \begin{array}{c} \text{cl. integral subsch.} \\
+                                                                                        \text{proper int. with faces}\end{array} \Bigr>, \\
+      \ZZ^c (n) & \dfn U \rightsquigarrow z_n (U, -\bullet) [2n].
+    \end{align*}
+
+  \item<4-> \textbf{Borel--Moore} behavior: triangles for
+    $Z \not\hookrightarrow X \hookleftarrow U$
+    \[ R\Gamma (Z_\et, \ZZ^c (n)) \to
+      R\Gamma (X_\et, \ZZ^c (n)) \to
+      R\Gamma (U_\et, \ZZ^c (n)) \to [+1]. \]
+
+  \item<5-> For $X$ proper and regular, $d = \dim X$:
+    \[ H^i (X_\et, \ZZ^c (n)) \cong H^{i+2d} (X_\et, \ZZ (d-n)). \]
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{COHOMOLOGICAL INTERPRETATION OF\\
+    VANISHING ORDERS}
+
+  \begin{itemize}
+  \item<2-> Consider $F/\QQ$ and $n \le 0$.
+
+  \item<3-> $\approx$ Borel, 1974:
+    \begin{align*}
+      d_n = \ord_{s = n} \zeta_F (s) & =
+                                       \rk_\ZZ H^{-1} (\Spec \mathcal{O}_{F,\et}, \ZZ^c (n)) \\
+                                     & =
+                                       \begin{cases}
+                                         r_1 + r_2 - 1, & n = 0, \\
+                                         r_1 + r_2, & n < 0\text{ even}, \\
+                                         r_1, & n < 0\text{ odd}.
+                                       \end{cases}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{COHOMOLOGICAL INTERPRETATION OF\\
+    SPECIAL VALUES}
+
+  \begin{itemize}
+  \item<2-> \textbf{Conjecture}:
+    \[ \zeta_F^* (n) = \pm\frac{|H^0 (X_\et, \ZZ^c (n))|}{|H^{-1} (X_\et, \ZZ^c (n))_\tors|}\,R_{F,n}. \]
+
+  \item<3-> \textbf{Higher regulators}: Borel, Beilinson, \dots:
+    \[ R_{F,n} = \vol\coker \Bigl(\underbrace{H^{-1} (X_\et, \ZZ^c(n))}_{\rk_\ZZ = d_n} \to \underbrace{H^1_\mathcal{D} (G_\RR, X(\CC), \RR(n))}_{\dim_\RR = d_n}\Bigr). \]
+
+  \item<4-> \textbf{Known for} abelian $F/\QQ$, via TNC
+
+    (Benois, Nguyen Quang Do, Huber, Kings, Flach, \dots)
+
+  \item<5-> \textbf{Lichtenbaum, 1973}: in terms of
+    $K_i (\mathcal{O}_F)$, for $F$ real ($r_2 = 0$), odd $n$
+    (hence $R_{F,n} = 1$).
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{CASE OF VARIETIES $X/\FF_q$}
+
+  \begin{itemize}
+  \item<2-> Consider $n < 0$.
+
+  \item<3-> $\ord_{s = n} \zeta (X,s) = 0$.
+
+  \item<4-> Assuming the groups $H^i (X_\et, \ZZ^c (n))$ are f.g.,
+
+    \[ \zeta (X,n) = \pm \prod_{i\in \ZZ} |H^i (X_\et, \ZZ^c (n))|^{(-1)^i}. \]
+
+  \item<5-> Reason: Grothendieck's trace formula + $\epsilon$.
+
+  \item<6-> Case of $n \ge 0$: more difficult; Milne (1986), \ldots
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge PART II.
+
+      \vspace{1em}
+
+      WEIL-ÉTALE COHOMOLOGY}
+  \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{STRUCTURE OF MOTIVIC COHOMOLOGY\\
+    FOR $X/\ZZ$ (LICHTENBAUM)}
+
+  \begin{itemize}
+  \item<2-> Conjecture:
+    \[ H^i (X_\et, \ZZ^c (n)) = \begin{cases}
+        \text{f.g.}, & i \le -2n, \\
+        \text{finite}, & i = -2n + 1, \\
+        \text{cofinite type}, & i \ge -2n + 2.
+    \end{cases} \]
+
+  \item<3-> \textbf{Cofinite type} = $\QQ/\ZZ$-dual to f.g.
+
+    Manifestation of \textbf{arithmetic duality}
+
+    (Artin, Verdier 1964, \ldots).
+
+  \item<4-> * If $n < 0$, then $H^i (X_\et, \ZZ^c (n))$ are conjecturally f.g.
+
+  \item<5-> \textbf{Beilinson--Soulé conjecture}:
+    $H^i (X_\et, \ZZ^c (n)) = 0$ for $i < -2\dim X$.
+
+  \item<6-> In general, $H^i (X_\et, \ZZ^c (n)) \ne 0$ for $i \gg 0$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{STRUCTURE OF MOTIVIC COHOMOLOGY\\
+    FOR $X/\FF_q$ (LICHTENBAUM)}
+
+  \begin{itemize}
+  \item<2-> Conjeturally,
+    \[ H^i (X_\et, \ZZ^c (n)) = \begin{cases}
+        \text{finite}, & i \ne -2n, \, -2n+2, \\
+        \text{f.g.}, & i = -2n, \\
+        \text{cofinite type}, & i = -2n + 2.
+      \end{cases} \]
+
+  \item<3-> * if $n < 0$, then $H^i (X_\et, \ZZ^c (n))$ are conjecturally
+    finite.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{WEIL-ÉTALE COHOMOLOGY (LICHTENBAUM)}
+
+  \begin{itemize}
+  \item<2-> $\text{Étale motivic cohomology} \rightsquigarrow
+    \text{Weil-étale cohomology}$.
+
+  \item<3-> $H^i_\Wc (X,\ZZ(n))$ finitely generated, $= 0$ for $|i| \gg 0$.
+
+  \item<4-> Long exact sequence
+    $$\cdots \to H^i_\Wc (X,\ZZ(n)) \otimes \RR \xrightarrow{\smile\theta} H^{i+1}_\Wc (X,\ZZ(n)) \otimes \RR \to \cdots$$
+
+  \item<5-> $H^i_\Wc (X, \ZZ(n))$ ``encodes'' $\ord_{s=n} \zeta (X,s)$ and
+    $\zeta^* (X,n)$.
+
+  \item<6-> Why ``Weil-étale''?
+    A construction for $X/\FF_q$:
+      \[ R\Gamma (G, R\Gamma (X_{\overline{\FF}_q,\et}, \ZZ^c (n))). \]
+
+      $G \subset \Gal (\overline{\FF}_q/\FF_q)$ = Weil group, generated by the
+      Frobenius ($\cong \ZZ \subset \widehat{\ZZ}$).
+
+    \item<7-> Weil-étale topos?
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{SOME RESULTS}
+
+  \begin{itemize}
+  \item<2-> A ``result'' =
+    \begin{itemize}
+    \item<3-> define $H^i_\Wc (X, \ZZ(n))$, assuming Lichtenbaum's conjectures
+      on the structure of $H^i (X_\et, \ZZ^c(n))$,
+    \item<4-> formulate the conjectural relation of $H^i_\Wc (X, \ZZ(n))$ to
+      $\ord_{s=n} \zeta (X,s)$ and $\zeta^* (X,n)$,
+    \item<5-> relate to other conjectures, prove some particular cases.
+    \end{itemize}
+
+  \item<6-> \textbf{Lichtenbaum} (2005): $X/\FF_q$.
+
+  \item<7-> \textbf{Geisser} (2004--\dots): $X/\FF_q$, possibly singular
+    ($eh$-topology).
+
+  \item<8-> \textbf{Lichtenbaum} (2009): $X = \Spec \mathcal{O}_F$.
+
+  \item<9-> \textbf{Morin} (2014): $X/\ZZ$ proper and regular, $n = 0$.
+
+  \item<10-> \textbf{Flach, Morin} (2018): \rule[0.25em]{2.75cm}{0.6pt},
+    $n \in \ZZ$.
+
+  \item<11-> \textbf{B.} (2020/21): any arithmetic scheme $X/\ZZ$, $n < 0$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge PART III.
+
+      \vspace{1em}
+
+      CONSTRUCTIONS AND
+
+      \vspace{0.25em}
+
+      CONJECTURES FOR n < 0}
+
+  \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{WEIL-ÉTALE COMPLEXES}
+
+  \begin{itemize}
+  \item<2-> $X \to \Spec \ZZ$ separated, of finite type, $n < 0$.
+
+  \item<3-> Assume a Lichtenbaum-type conjecture $\mathbf{L}^c (X_\et, n)$:
+
+    $H^i (X_\et, \ZZ^c(n))$ are fintely generated for all $i \in \ZZ$.
+
+  \item<4-> There is a complex $R\Gamma_\Wc (X, \ZZ(n)) \in \mathcal{D} (\ZZ)$.
+
+  \item<5-> Perfectness of the complex:
+    \[ H^i_\Wc (X, \ZZ(n)) \dfn H^i (R\Gamma_\Wc (X, \ZZ(n))) \]
+    are finitely generated, $= 0$ for $i \notin [0, 2\dim X + 1]$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{WEIL-ÉTALE COMPLEXES (CONT.)}
+
+  \begin{itemize}
+  \item<2-> For $X/\FF_q$, there is an isomorphism of finite groups
+    \begin{align*}
+      H^i_\Wc (X, \ZZ (n)) & \cong \Hom (H^{2-i} (X_\et, \ZZ^c (n)), \QQ/\ZZ) \\
+                           & \cong H^{i-1}_c (X_\et, \QQ/\ZZ' (n)), \quad \QQ/\ZZ' (n) = \varinjlim_{p\nmid m} \mu_m^{\otimes n}.
+    \end{align*}
+
+  \item<3-> Splitting with rational / real coefficients:
+    \[ R\Gamma_\Wc (X, \ZZ(n)) \otimes \RR \cong
+      \begin{array}{c}
+        \RHom(R\Gamma(X_\et, \ZZ^c(n)), \RR)[-1]\\
+        \oplus \\
+        R\Gamma_c (G_\RR, X(\CC), \RR(n))[-1]
+      \end{array} \]
+
+  \item<4-> $\RR(n) \dfn (2\pi i)^n\,\RR$, $G_\RR \dfn \Gal (\CC/\RR)$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{PRINCIPAL INGREDIENT}
+
+  \begin{itemize}
+  \item<2-> Arithmetic duality
+    \[ \Hom (\underbrace{H^{2-i} (X_\et, \ZZ^c (n))}_{\text{f.g.}}, \QQ/\ZZ) \cong
+      \underbrace{\widehat{H}^i_c (X_\et, \ZZ' (n))}_{\text{cofinite type}}, \]
+
+  \item<3-> Based on work of Geisser (2010).
+
+  \item<4-> $\ZZ' (n) = \QQ/\ZZ' (n) [-1] = \bigoplus_p \varinjlim_r j_{p!} \mu_{p^r}^{\otimes n} [-1]$,
+    \quad $j_p\colon X[1/p] \hookrightarrow X$.
+
+  \item<5-> * $\widehat{H}^i_c$ = modified cohomology with compact support,
+    treats $X (\RR)$.
+
+    \[ \widehat{H}^i_c (X_\et, \mathcal{F}^\bullet) \cong
+      H^i_c (X_\et, \mathcal{F}^\bullet) \quad
+      \text{up to }2\text{-torsion} \]
+
+  \item<6-> Generalization of Artin--Verdier duality for
+    $X = \Spec \mathcal{O}_F$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{REGULATORS}
+
+  \begin{itemize}
+  \item<2-> Assume the fiber $X_\CC$ is smooth.
+
+  \item<3-> Construction of Kerr--Lewis--Müller-Stach (2006) $\Longrightarrow$
+    \[ Reg\colon R\Gamma (X_\et, \RR^c (n)) \to
+      \RHom (R\Gamma_c (G_\RR, X(\CC), \RR (n)), \RR[1]). \]
+
+  \item<4-> * the target is not Deligne--Beilinson cohomology, but simply
+    $H_c^i (G_\RR, X(\CC), \RR (n))^\vee$, since $n < 0$.
+
+  \item<5-> Conjecture $\mathbf{B} (X,n)$ (Beilinson):
+    \[ Reg^\vee\colon R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \to
+      \RHom (R\Gamma (X_\et, \ZZ^c (n)), \RR) \]
+    is a quasi-isomorphism.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{VANISHING ORDER CONJECTURE}
+
+  \begin{itemize}
+  \item<2-> $\mathbf{VO} (X,n)$: assuming $\mathbf{L}^c (X,n)$,
+    \[ \tag{*} \ord_{s=n} \zeta (X,s) =
+      \sum_{i \in \ZZ} (-1)^i \cdot i \cdot \rk_\ZZ H^i_\Wc (X, \ZZ (n)). \]
+
+  \item<3-> Assuming $\mathbf{B} (X,n)$,
+    \begin{align}
+      \tag{**} \ord_{s=n} \zeta (X,s) & = \sum_{i \in \ZZ} (-1)^i \dim_\RR H^i_c (X(\CC), \RR (n))^{G_\RR} \\
+      \tag{***} & = \sum_{i \in \ZZ} (-1)^{i+1} \rk_\ZZ H^i (X_\et, \ZZ^c (n)).
+    \end{align}
+
+  \item<4-> (**) agrees with the (conjectural) functional equation.
+
+    For $n < 0$ zeros and poles come from the $\Gamma$-factors.
+
+  \item<5-> (***) agrees with a conjecture of Soulé (1984).
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{TOY EXAMPLE}
+
+  \begin{itemize}
+  \item<2-> For $X = \Spec \mathcal{O}_F$ consider $X (\CC)$:
+    \[ \begin{tikzpicture}[ampersand replacement=\&]
+        \matrix(m)[matrix of math nodes, row sep=0.5em, column sep=0.5em,
+        text height=1ex, text depth=0.2ex]{
+          ~ \& ~ \& ~ \& ~ \& ~ \& \bullet \& \bullet \& \cdots \& \bullet \\
+          \bullet \& \bullet \& \cdots \& \bullet \\
+          ~ \& ~ \& ~ \& ~ \& ~ \& \bullet \& \bullet \& \cdots \& \bullet \\};
+
+        \draw[->] (m-2-1) edge[loop above,min distance=10mm] (m-2-1);
+        \draw[->] (m-2-2) edge[loop above,min distance=10mm] (m-2-2);
+        \draw[->] (m-2-4) edge[loop above,min distance=10mm] (m-2-4);
+
+        \draw[->] (m-1-6) edge[bend left] (m-3-6);
+        \draw[->] (m-1-7) edge[bend left] (m-3-7);
+        \draw[->] (m-1-9) edge[bend left] (m-3-9);
+
+        \draw[->] (m-3-6) edge[bend left] (m-1-6);
+        \draw[->] (m-3-7) edge[bend left] (m-1-7);
+        \draw[->] (m-3-9) edge[bend left] (m-1-9);
+
+        \draw ($(m-3-1)!.5!(m-3-4)$) node[yshift=-2em,anchor=base] {$r_1$ points};
+        \draw ($(m-3-6)!.5!(m-3-9)$) node[yshift=-2em,anchor=base] {$2\,r_2$ points};
+      \end{tikzpicture} \]
+
+  \item<3-> Complex $R\Gamma_c (X (\CC), \RR (n))$:
+    $$\RR (n)^{\oplus r_1} \oplus (\RR (n) \oplus \RR (n))^{r_2},$$
+    $G_\RR$-action by
+    $z \mapsto \overline{z}$ resp.
+    $(z,w) \mapsto (\overline{w}, \overline{z})$.
+
+  \item<4-> $\ord_{s=n} \zeta_F (s) =
+    \dim_\RR H^0_c (X (\CC), \RR (n))^{G_\RR} =
+    \rk_\ZZ H^{-1}_\et (X, \ZZ^c (n)) =
+    \left\{\begin{array}{ll}
+      r_1 + r_2, & n \text{ even},\\
+      r_2, & n \text{ odd}.
+    \end{array}\right\}$
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{DETERMINANTS OF COMPLEXES}
+
+  \begin{itemize}
+  \item<2-> For projective f.g. modules:
+
+    $\det\nolimits_R P \dfn \bigwedge^{\rk P} P$
+
+    (invertible = projective of rk 1).
+
+  \item<3-> Functor
+    \[ \left(\!\!\begin{array}{c}
+              \text{projective f.g. modules}, \\
+              \text{isomorphisms}
+       \end{array}\!\!\right) \rightsquigarrow
+       \left(\!\!\begin{array}{c}
+               \text{invertible modules}, \\
+               \text{isomorphisms}
+       \end{array}\!\!\right). \]
+
+  \item<4-> Knudsen, Mumford, 1976: extension
+    \[ \left(\!\!\begin{array}{c}
+                   \text{perfect complexes}, \\
+                   \text{quasi-isomorphisms}
+                 \end{array}\!\!\right) \rightsquigarrow
+               \left(\!\!\begin{array}{c}
+                           \text{invertible modules}, \\
+                           \text{isomorphisms}
+                         \end{array}\!\!\right). \]
+
+  \item<5-> $\det\nolimits_R A^\bullet \cong \bigotimes_{i\in \ZZ} (\det_R H^i (A^\bullet))^{(-1)^i}$,
+   $\det\nolimits_R 0 \cong R$.
+
+  \item<6-> Compatible with base change.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{TRIVIALIZATION MORPHISM}
+
+  \begin{itemize}
+  \item<2-> Quasi-isomorphism of complexes, assuming $\mathbf{B} (X,n)$:
+    \[ \begin{tikzcd}[column sep=4em,ampersand replacement=\&]
+        \begin{array}{c} R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-2] \\ \oplus \\ R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \end{array} \ar{d}{Reg^\vee [-1] \oplus id}[swap]{\cong} \&[-2em] \text{\small * $\det\nolimits_R (A^\bullet \oplus A^\bullet [1]) \cong R$} \\
+        \begin{array}{c} \RHom (R\Gamma (X_\et, \ZZ^c (n)), \RR) [-1] \\ \oplus \\ R\Gamma_c (G_\RR, X (\CC), \RR (n)) [-1] \end{array} \ar{r}{\text{split}}[swap]{\cong} \& R\Gamma_\Wc (X, \ZZ (n)) \otimes \RR
+      \end{tikzcd} \]
+
+  \item<3-> Canonical isomorphism of determinants:
+    \[ \lambda\colon \RR \xrightarrow{\cong}
+      \det\nolimits_\RR \Bigl(R\Gamma_\Wc (X, \ZZ (n)) \otimes \RR\Bigr) \cong
+      \Bigl(\det\nolimits_\ZZ R\Gamma_\Wc (X, \ZZ (n))\Bigr) \otimes \RR. \]
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{SPECIAL VALUE CONJECTURE}
+
+  \begin{itemize}
+  \item<2-> Consider
+  \[ \lambda\colon \RR \xrightarrow{\cong}
+    (\underbrace{\det\nolimits_\ZZ R\Gamma_\Wc (X, \ZZ (n))}_{\ZZ\text{-mod of rk }1}) \otimes \RR. \]
+
+  \item<3-> Assume
+    \begin{itemize}
+    \item $\mathbf{L}^c (X_\et, n)$: finite generation of $H^i (X_\et, \ZZ^c(n))$,
+    \item smooth fiber $X_\CC$,
+    \item $\mathbf{B} (X,n)$: regulator conjecture,
+    \item meromorphic continuation around $s = n < 0$.
+    \end{itemize}
+
+  \item<4-> $\mathbf{C} (X,n)$: the special value at $s = n < 0$ is determined up to
+    sign by
+    \[ \lambda (\zeta^* (X,n)^{-1})\cdot \ZZ =
+      \det\nolimits_\ZZ R\Gamma_\Wc (X, \ZZ (n)). \]
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{CASE OF VARIETIES $X/\FF_q$}
+
+  \begin{itemize}
+  \item<2-> Assuming $\mathbf{L}^c (X_\et, n)$, the conjecture
+    $\mathbf{C} (X,n)$ is equivalent to
+    \[ \zeta (X,n) = \pm \prod_{i \in \ZZ} |H^i (X_\et, \ZZ^c (n))|^{(-1)^i}. \]
+
+  \item<3-> $X (\CC) = \emptyset$, there's no regulator.
+
+  \item<4-> A singular example: nodal cubic
+    $X = \PP^1_{\FF_q} / (0\sim 1)$.
+    \begin{align*}
+      H^{-1} (X_\et, \ZZ^c (n)) & = \ZZ/(q^{1-n} - 1), \\
+      H^{0,1} (X_\et, \ZZ^c (n)) & = \ZZ/(q^{-n} - 1).
+    \end{align*}
+
+    \[ \zeta (X,s) = \frac{1}{1 - q^{1-s}}. \]
+
+  \item<5-> $\mathbf{L}^c (X_\et, n) \Longrightarrow \mathbf{C} (X,n)$
+    for any $n < 0$ and $X/\FF_q$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{COMPATIBILITIES}
+
+  \begin{itemize}
+  \item<2-> \textbf{Disjoint unions}: if
+    $X = \coprod_{1 \le i \le r} X_i$, then
+    \[ \zeta (X,s) = \prod_{1 \le i \le r} \zeta (X_i,s). \]
+
+  \item<3-> Accordingly,
+    \begin{align*}
+      \mathbf{VO} (X,n) & \iff \mathbf{VO} (X_i,n)\text{ for all }i, \\
+      \mathbf{C} (X,n) & \iff \mathbf{C} (X_i,n)\text{ for all }i.
+    \end{align*}
+
+  \item<4-> \textbf{Closed-open decompositions}:
+    for $Z \not\hookrightarrow X \hookleftarrow U$,
+    \[ \zeta (X,s) = \zeta (Z,s) \cdot \zeta (U,s). \]
+
+  \item<5-> Two out of three conjectures
+    $\mathbf{VO} (X,n)$, $\mathbf{VO} (Z,n)$, $\mathbf{VO} (U,n)$
+    (resp. $\mathbf{C} (X,n)$, $\mathbf{C} (Z,n)$, $\mathbf{C} (U,n)$)
+    imply the third.
+
+  \item<6-> \textbf{Affine bundles}:
+    $\zeta (\AA^r_X, s) = \zeta (X, s-r)$.
+
+  \item<7-> $\mathbf{VO} (\AA^r_X, n) \iff \mathbf{VO} (X, n-r)$,
+    $\mathbf{C} (\AA^r_X, n) \iff \mathbf{C} (X, n-r)$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge PART IV.
+
+      \vspace{1em}
+
+      NEW UNCONDITIONAL
+
+      \vspace{0.25em}
+
+      RESULTS}
+  \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{ONE-DIMENSIONAL SCHEMES}
+
+  \begin{itemize}
+  \item<2-> Let $B$ be a 1-dimensional arithmetic scheme.
+
+  \item<3-> We say it's \textbf{abelian} if for each generic point $\eta \in B$
+    holds
+    \begin{enumerate}
+    \item[a)] $\fchar \kappa (\eta) = p > 0$, or
+
+    \item[b)] $\fchar \kappa (\eta) = 0$ and $\kappa (\eta)/\QQ$ is abelian.
+    \end{enumerate}
+
+  \item<4-> \textbf{Theorem} (B.): $\mathbf{VO} (B,n)$ and $\mathbf{C} (B,n)$
+    hold unconditionally for any $n < 0$ and abelian 1-dimensional $B$.
+
+  \item<5-> \textbf{Proof idea}: the cases of $B = \Spec \mathcal{O}_F$ and
+    $B/\FF_q$ are known. Use compatibilities and proceed by dévissage.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{MOTIVIC COHOMOLOGY\\
+    FOR ONE-DIMENSIONAL $B$}
+
+  \onslide<2->{\[ H^i (B_\et, \ZZ^c (n)) \cong
+      \begin{cases}
+        0, & i < -1, \\
+        \text{f.g. of rk } d_n, & i = -1, \\
+        \text{finite}, & i = 0,1, \\
+        (\ZZ/2\ZZ)^{\oplus |X (\RR)|}, & i \ge 2, ~ i\not\equiv n ~ (2), \\
+        0, & i \ge 2, ~ i\equiv n ~ (2).
+      \end{cases} \]}
+
+  \begin{itemize}
+  \item<3-> Arithmetically interesting part concentrated in $i = -1,0,+1$.
+
+  \item<4-> Finite $2$-torsion for $i \ge 2$ comes from $X (\RR)$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{WEIL-ÉTALE COHOMOLOGY\\
+    FOR ONE-DIMENSIONAL $B$}
+
+  \begin{itemize}
+  \item<2-> $H^i_\Wc (B, \ZZ(n)) = 0$ for $i \ne 1,2,3$.
+
+  \item<3-> $H^1_\Wc (B, \ZZ(n)) \cong \underbrace{H^0_c (G_\RR, B (\CC), \ZZ(n))}_{\cong \ZZ^{\oplus d_n}} \oplus \Hom (\underbrace{H^1 (B_\et, \ZZ^c(n))}_{\text{finite}}, \QQ/\ZZ)$
+
+    (more or less, up to finite $2$-tosion).
+
+  \item<4-> $H^2_\Wc (B, \ZZ(n)) \cong
+    \underbrace{\Hom (H^{-1} (B_\et, \ZZ^c(n)), \ZZ)}_{\cong \ZZ^{\oplus d_n}}
+    \oplus
+    \Hom (\underbrace{H^0 (B_\et, \ZZ^c(n))}_{\text{finite}}, \QQ/\ZZ)$.
+
+  \item<5-> $H^3_\Wc (B, \ZZ(n)) \cong
+    \Hom (H^{-1} (B_\et, \ZZ^c(n))_\tors, \QQ/\ZZ)$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{EXPLICIT FORMULA}
+
+  \onslide<2->{\begin{align*}
+    \zeta^* (B,n) & =
+                    \pm 2^\delta\,\frac{|H^0 (B_\et, \ZZ^c (n)|}{|H^{-1}
+                    (B_\et, \ZZ^c (n))_\tors| \cdot |H^1 (B_\et, \ZZ^c (n))|}\,R_{B,n}; \\
+    \delta & =
+             \begin{cases}
+               |B (\RR)|, & n \text{ even}, \\
+               0, & n \text{ odd};
+             \end{cases} \\
+    R_{B,n} & = \text{regulator on }H^{-1} (B_\et, \ZZ^c (n)).
+  \end{align*}}
+
+  \begin{itemize}
+  \item<3-> \textbf{Theorem} (B.): this is true for abelian $B$ and $n < 0$.
+
+  \item<4-> \textbf{Conjecture}: should be true for nonabelian $B$.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{CELLULAR SCHEMES}
+
+  \begin{itemize}
+  \item<2-> \textbf{Cellular} scheme $X \to B$: admits filtration by closed
+    subschemes
+    \[ X = Z_N \supseteq Z_{N-1} \supseteq \cdots \supseteq Z_0 \supseteq Z_{-1} = \emptyset, \]
+    with $Z_i\setminus Z_{i-1} \cong \coprod_j \AA^{r_{i_j}}_B$
+
+  \item<3-> \textbf{Theorem} (B.): Given $X$ cellular over a $1$-dim abelian
+    base $B$, with smooth fiber $X_\CC$, the conjectures $\mathbf{VO} (X,n)$ and
+    $\mathbf{C} (X,n)$ hold unconditionally for all $n < 0$.
+
+  \item<4-> \textbf{Proof idea}: compatibilities and dévissage.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge PART V.
+
+      \vspace{1em}
+
+      SOME QUESTIONS}
+  \end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{SOME QUESTIONS FOR THE FUTURE}
+
+  \begin{itemize}
+  \item<2-> What to do for $n \ge 0$ and non-regular $X$?
+
+    Geisser (2006): case of singular $X/\FF_q$.
+
+    Mixed characteristic? Already interesting case: nonmaximal orders $X = \Spec \mathcal{O}$.
+
+  \item<3-> The regulator of Kerr--Lewis--Müller-Stach is defined for smooth
+    $X_\CC$.
+    How to extend it to the non-smooth case?
+
+  \item<4-> When the comparison makes sense, $\mathbf{C} (X,n)$ is equivalent to
+    TNC.
+    What is the equivariant refinement, equivalent to ETNC?
+
+  \item<5-> More canonical and functorial construction of Weil-étale complexes
+    $R\Gamma_\Wc (X, \ZZ(n))$.
+
+  \item<6-> \dots
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[plain]
+  \headingfont
+
+  \begin{center}
+    {\huge THANK YOU FOR
+
+      \vspace{0.3em}
+
+      YOUR ATTENTION!}
+  \end{center}
+\end{frame}
+
+\end{document}
